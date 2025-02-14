@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Amorcito</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="letter-container">
+  <h1>💌 Para alguien especial 💌</h1>
+  <p id="intro-message">He querido decirte esto desde hace mucho tiempo... 💭</p>
+  <button id="open-letter" onclick="openLetter()">Abrir carta</button>
+  
+  <!-- Mensaje oculto -->
+  <div id="hidden-message" style="display: none;">
+    <p>💖 Desde que te conocí, todo cambió para mejor... 💖</p>
+    <p>🌹 Me haces muy feliz y quiero que siempre estemos juntos. 🌹</p>
+    <p style="font-size: 36px; color: #d81b60;">✨ ¿Quieres ser mi pareja? ✨</p>
+
+    <div id="buttons">
+      <button id="yes-button" onclick="yesClicked()">💖 Sí 💖</button>
+      <button id="no-button" onmouseover="moveNoButton()" onclick="disableNoButton()">❌ No ❌</button>
+    </div>
+  </div>
+
+  <!-- Contenedor para corazones animados -->
+  <div id="hearts-container"></div>
+</div>
+
+<style>
+  /* Estilos generales */
+  body {
+    font-family: 'Arial, sans-serif';
+    background-color: #ffe6f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  /* Contenedor de la carta - Ahora es enorme */
+  #letter-container {
+    background-color: white;
+    padding: 80px;
+    border-radius: 25px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    max-width: 90%;
+    text-align: center;
+    font-size: 32px;
+    width: 800px;
+    height: auto;
+  }
+
+  /* Estilos del título */
+  h1 {
+    color: #d81b60;
+    font-size: 50px;
+    margin-bottom: 20px;
+  }
+
+  /* Mensaje de introducción */
+  #intro-message {
+    font-size: 28px;
+    color: #6a1b9a;
+    margin-bottom: 30px;
+  }
+
+  /* Botón de abrir carta */
+  #open-letter {
+    padding: 20px 40px;
+    background-color: #ff4081;
+    border: none;
+    color: white;
+    font-size: 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  #open-letter:hover {
+    background-color: #e91e63;
+    transform: scale(1.1);
+  }
+
+  /* Mensaje oculto */
+  #hidden-message {
+    font-size: 30px;
+    color: #ad1457;
+    margin-top: 20px;
+    display: none;
+  }
+
+  /* Botones de Sí y No */
+  #buttons {
+    margin-top: 30px;
+  }
+
+  button {
+    padding: 18px 40px;
+    font-size: 30px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+  #yes-button {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  #no-button {
+    background-color: #f44336;
+    color: white;
+    transition: transform 0.1s ease-in-out;
+  }
+
+  #no-button.disabled {
+    background-color: grey !important;
+    cursor: not-allowed;
+  }
+
+  /* Efecto de corazones flotantes */
+  #hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .heart {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #ff1744;
+    clip-path: polygon(50% 0%, 0% 50%, 50% 100%, 100% 50%);
+    animation: floatUp 5s linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100vh);
+      opacity: 0;
+    }
+  }
+
+  /* Ajustes para pantallas pequeñas */
+  @media (max-width: 600px) {
+    #letter-container {
+      width: 95%;
+      padding: 60px;
+    }
+
+    h1 {
+      font-size: 42px;
+    }
+
+    #intro-message {
+      font-size: 26px;
+    }
+
+    button {
+      font-size: 28px;
+    }
+
+    #no-button.disabled {
+      background-color: grey !important;
+      cursor: not-allowed;
+    }
+  }
+</style>
+
+<script>
+  function openLetter() {
+    document.getElementById('hidden-message').style.display = 'block';
+    document.getElementById('open-letter').style.display = 'none';
+  }
+
+  function yesClicked() {
+    document.getElementById('hidden-message').innerHTML = `
+      <p>🎉 ¡Sabía que dirías que sí! 🎉</p>
+      <p>💖 Gracias por hacerme tan feliz, esto es solo el inicio de algo maravilloso. 💖</p>
+    `;
+
+    // Generar corazones animados
+    for (let i = 0; i < 70; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = `${Math.random() * 100}vw`;
+      heart.style.animationDuration = `${2 + Math.random() * 3}s`;
+      document.getElementById('hearts-container').appendChild(heart);
+
+      setTimeout(() => heart.remove(), 5000);
+    }
+  }
+
+  function moveNoButton() {
+    if (!isMobile()) {
+      const noButton = document.getElementById('no-button');
+      const randomX = Math.random() * 600 - 300;
+      const randomY = Math.random() * 300 - 150;
+      noButton.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    }
+  }
+
+  function disableNoButton() {
+    const noButton = document.getElementById('no-button');
+    noButton.classList.add('disabled');
+    noButton.innerText = "Bloqueado 🚫";
+    noButton.disabled = true;
+  }
+
+  function isMobile() {
+    return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+  }
+</script>
+<!-- partial -->
+  
+</body>
+</html>
